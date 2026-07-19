@@ -1,46 +1,29 @@
-name: Node + Python CI
+name: Python CI
 
 on:
   push:
     branches:
       - main
+      - master
+  pull_request:
 
 jobs:
-  build:
+  run-python:
     runs-on: ubuntu-latest
 
     steps:
-      # Download the repository
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Install Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      # Install Python
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
-      # Install Node dependencies
-      - name: Install Node Dependencies
-        run: npm ci
-
-      # Install Python dependencies
-      - name: Install Python Dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Run Python script (optional)
-      - name: Run Python Script
+      - name: Run Python script
         run: python src/script.py
-
-      # Build Node project
-      - name: Build Project
-        run: npm run build
